@@ -1,5 +1,6 @@
 package com.example.sqltasksnew.Helper;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -25,9 +26,16 @@ public class TaskDAO implements  TaskDAOImplementation {
     public boolean save(Task task) {
 
         try{
-            write.insert(DatabaseHelper.getNameDb(),null)
-        } catch (Exception e){
+            ContentValues cv = new ContentValues();
+            cv.put("nome", task.getTaskName());
 
+            write.insert(DatabaseHelper.getNameDb(),null, cv);
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+
+            return false;
         }
 
 

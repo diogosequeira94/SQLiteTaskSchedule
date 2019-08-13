@@ -3,19 +3,27 @@ package com.example.sqltasksnew.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.sqltasksnew.Helper.TaskDAO;
+import com.example.sqltasksnew.Model.Task;
 import com.example.sqltasksnew.R;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class AddTask extends AppCompatActivity {
+
+    private TextInputEditText addTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+
+        addTask = findViewById(R.id.task);
+
     }
 
     @Override
@@ -35,7 +43,12 @@ public class AddTask extends AppCompatActivity {
             case R.id.done:
                 //DAO Data Access Object , usada para salvar e recuperar dados
                 TaskDAO taskDAO = new TaskDAO(getApplicationContext());
-                taskDAO.save();
+
+                Task task = new Task();
+                task.setTaskName(addTask.getText().toString());
+                taskDAO.save(task);
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
                 break;
 
         }
