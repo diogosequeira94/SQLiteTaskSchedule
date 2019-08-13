@@ -44,4 +44,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
+
+    public static int getVERSION() {
+        return VERSION;
+    }
+
+    public static String getNameDb() {
+        return NAME_DB;
+    }
+
+    public static String getTableTasks() {
+        return TABLE_TASKS;
+    }
 }

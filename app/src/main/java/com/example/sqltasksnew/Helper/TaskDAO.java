@@ -25,7 +25,7 @@ public class TaskDAO implements  TaskDAOImplementation {
     public boolean save(Task task) {
 
         try{
-            write.insert()
+            write.insert(DatabaseHelper.getNameDb(),null)
         } catch (Exception e){
 
         }
