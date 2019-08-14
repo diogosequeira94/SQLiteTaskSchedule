@@ -2,10 +2,13 @@ package com.example.sqltasksnew.Helper;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.sqltasksnew.Model.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskDAO implements  TaskDAOImplementation {
@@ -29,11 +32,15 @@ public class TaskDAO implements  TaskDAOImplementation {
             ContentValues cv = new ContentValues();
             cv.put("nome", task.getTaskName());
 
-            write.insert(DatabaseHelper.getNameDb(),null, cv);
+            write.insert(DatabaseHelper.TABLE_TASKS,null, cv);
+
+            Log.i("INFO", "SAVED WITH SUCESS");
 
 
         } catch (Exception e){
             e.printStackTrace();
+
+            Log.i("INFO", "SAVED WITHOUT SUCESS");
 
             return false;
         }
@@ -51,11 +58,36 @@ public class TaskDAO implements  TaskDAOImplementation {
 
     @Override
     public boolean delete(Task task) {
+
+     //   read.delete()
+
+
         return false;
     }
 
     @Override
     public List<Task> list() {
-        return null;
+
+        List<Task> myTasks = new ArrayList<>();
+
+        String sql = "SELECT * FROM " + DatabaseHelper.TABLE_TASKS + " ;";
+        Cursor c = read.rawQuery(sql, null);
+
+        while(c.moveToNext()){
+
+            Task task = new Task();
+
+            Long id = c.getLong(c.getColumnIndex("id"));
+            String name = c.getString(c.getColumnIndex("nome"));
+
+            task.setId(id);
+            task.setTaskName(name);
+
+            myTasks.add(task);
+        }
+
+
+
+        return myTasks;
     }
 }

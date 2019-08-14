@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.sqltasksnew.Helper.TaskDAO;
 import com.example.sqltasksnew.Model.Task;
@@ -46,10 +47,15 @@ public class AddTask extends AppCompatActivity {
 
                 Task task = new Task();
                 task.setTaskName(addTask.getText().toString());
-                taskDAO.save(task);
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
-                break;
+                if(!addTask.getText().toString().equals("")){
+                    taskDAO.save(task);
+                    finish();
+                    break;
+                } else{
+                    Toast.makeText(getApplicationContext(), "Please insert a task!", Toast.LENGTH_SHORT).show();
+                }
+
+
 
         }
         return super.onOptionsItemSelected(item);

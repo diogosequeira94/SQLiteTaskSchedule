@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.example.sqltasksnew.Adapter.TaskAdapter;
 import com.example.sqltasksnew.Helper.DatabaseHelper;
 import com.example.sqltasksnew.Helper.RecyclerItemClickListener;
+import com.example.sqltasksnew.Helper.TaskDAO;
 import com.example.sqltasksnew.Model.Task;
 import com.example.sqltasksnew.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -43,13 +44,6 @@ public class MainActivity extends AppCompatActivity {
         //RecyclerViewConfig
         recyclerView = findViewById(R.id.recyclerView);
 
-        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-
-        ContentValues cv = new ContentValues();
-        cv.put("nome" , "Teste");
-
-        databaseHelper.getWritableDatabase().insert("tasks", null, cv );
-
         //Add OnClick
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(
@@ -57,6 +51,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 //Edit
+
+                Task selectedTask = taskList.get(position);
+
+                //Sending task to activity
+
+                Intent intent = new Intent(MainActivity.this, AddTask.class);
+                intent.putExtra("chosenTask", selectedTask);
+
+                startActivity(intent);
 
             }
 
@@ -91,26 +94,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
 
+        loadTaskList();
         super.onStart();
     }
 
     public void loadTaskList(){
 
         //Tasks
-        Task task1 = new Task();
-        task1.setTaskName("Go to Market");
-        taskList.add(task1);
 
-        Task task2 = new Task();
-        task2.setTaskName("Go to Barber");
-        taskList.add(task2);
-
-        Task task3 = new Task();
-        task3.setTaskName("Go to Mall");
-        taskList.add(task3);
-
-
-
+        TaskDAO taskDAO = new TaskDAO(getApplicationContext());
+        taskList = taskDAO.list();
 
 
         //Adapter

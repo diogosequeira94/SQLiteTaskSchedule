@@ -9,8 +9,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static int VERSION = 1;
-    private static String NAME_DB = "DB_TASK";
-    private static String TABLE_TASKS = "tasks";
+    public static String NAME_DB = "DB_TASK";
+    public static String TABLE_TASKS = "tasks";
 
 
 
