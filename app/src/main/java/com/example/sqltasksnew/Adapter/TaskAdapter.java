@@ -3,6 +3,7 @@ package com.example.sqltasksnew.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         Task task = taskList.get(position);
         holder.task.setText(task.getTaskName());
 
+        if(task.isImportant()) {
+            holder.imageView.setImageResource(R.drawable.ic_priority_high_black_24dp);
+        }
+
+
 
     }
 
@@ -60,11 +66,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView task;
+        ImageView imageView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             task = itemView.findViewById(R.id.textTask);
+            imageView = itemView.findViewById(R.id.priority);
 
 
         }
