@@ -26,22 +26,12 @@
             android:hint="Add a task" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Switch
-        android:id="@+id/switch1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="32dp"
-        android:text="Active"
-        app:layout_constraintBottom_toTopOf="@+id/importantCheck"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <CheckBox
         android:id="@+id/importantCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="197dp"
+        android:layout_marginTop="128dp"
         android:text="Important"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -72,7 +62,7 @@
         app:layout_constraintTop_toBottomOf="@+id/importantCheck" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonDelete"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="161dp"

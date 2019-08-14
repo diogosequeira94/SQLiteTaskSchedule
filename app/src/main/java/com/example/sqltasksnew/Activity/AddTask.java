@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
@@ -20,6 +22,8 @@ public class AddTask extends AppCompatActivity {
     private TextInputEditText addTask;
     private Task actualTask;
     private CheckBox importantCheck;
+    private Button buttonDelete;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,7 @@ public class AddTask extends AppCompatActivity {
 
         addTask = findViewById(R.id.task);
         importantCheck = findViewById(R.id.importantCheck);
+        buttonDelete = findViewById(R.id.buttonDelete);
 
         //Recovers actual Task
         actualTask = (Task) getIntent().getSerializableExtra("chosenTask");
@@ -36,6 +41,19 @@ public class AddTask extends AppCompatActivity {
         if(actualTask != null){
             addTask.setText(actualTask.getTaskName());
         }
+
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                TaskDAO taskDAO = new TaskDAO(getApplicationContext());
+                taskDAO.delete(actualTask);
+                Toast.makeText(AddTask.this, "Delete successfully", Toast.LENGTH_SHORT).show();
+                finish();
+
+
+            }
+        });
 
     }
 
@@ -70,13 +88,9 @@ public class AddTask extends AppCompatActivity {
                         task.setTaskName(addTask.getText().toString());
                         task.setId(actualTask.getId());
 
-                        if(importantCheck.isChecked()){
+                        if(importantCheck.isChecked()) {
 
                             task.setImage(1);
-
-                        } else {
-
-                            task.setImage(0);
                         }
 
                         //Update method

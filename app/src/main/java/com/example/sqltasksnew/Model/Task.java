@@ -9,6 +9,7 @@ public class Task implements Serializable {
     private Long id;
     private String taskName;
     private int image;
+    private String notes;
 
     public Long getId() {
         return id;
@@ -33,5 +34,13 @@ public class Task implements Serializable {
 
     public int getImage() {
         return image;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }
