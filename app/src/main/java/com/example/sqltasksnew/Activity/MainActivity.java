@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, AddTask.class);
                 intent.putExtra("chosenTask", selectedTask);
 
+
                 startActivity(intent);
 
             }

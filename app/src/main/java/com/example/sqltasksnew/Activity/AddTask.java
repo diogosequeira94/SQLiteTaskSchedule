@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.sqltasksnew.Helper.TaskDAO;
@@ -23,6 +24,7 @@ public class AddTask extends AppCompatActivity {
     private Task actualTask;
     private CheckBox importantCheck;
     private Button buttonDelete;
+    private EditText notes;
 
 
     @Override
@@ -33,6 +35,7 @@ public class AddTask extends AppCompatActivity {
         addTask = findViewById(R.id.task);
         importantCheck = findViewById(R.id.importantCheck);
         buttonDelete = findViewById(R.id.buttonDelete);
+        notes = findViewById(R.id.myNotes);
 
         //Recovers actual Task
         actualTask = (Task) getIntent().getSerializableExtra("chosenTask");
@@ -40,7 +43,11 @@ public class AddTask extends AppCompatActivity {
         //EditText configuration
         if(actualTask != null){
             addTask.setText(actualTask.getTaskName());
+            //Notes Configuration
+
+            notes.setText(actualTask.getNotes());
         }
+
 
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +93,7 @@ public class AddTask extends AppCompatActivity {
                         Task task = new Task();
 
                         task.setTaskName(addTask.getText().toString());
+                        task.setNotes(notes.getText().toString());
                         task.setId(actualTask.getId());
 
                         if(importantCheck.isChecked()) {
@@ -125,7 +133,7 @@ public class AddTask extends AppCompatActivity {
                             task.setImage(0);
                         }
 
-
+                        task.setNotes(notes.getText().toString());
                         task.setTaskName(addTask.getText().toString());
                         if( taskDAO.save(task)){
                             Toast.makeText(getApplicationContext(), "Success adding task!", Toast.LENGTH_SHORT).show();
