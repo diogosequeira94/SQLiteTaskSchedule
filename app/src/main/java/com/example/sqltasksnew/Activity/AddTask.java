@@ -93,12 +93,21 @@ public class AddTask extends AppCompatActivity {
                         Task task = new Task();
 
                         if(importantCheck.isChecked()){
+
                             task.setImportant(true);
+                            task.setImage(1);
+
+                        } else {
+
+                            task.setImportant(false);
+                            task.setImage(0);
                         }
+
 
                         task.setTaskName(addTask.getText().toString());
                         if( taskDAO.save(task)){
                             Toast.makeText(getApplicationContext(), "Success adding task!", Toast.LENGTH_SHORT).show();
+                            System.out.println("Adding the Task Activity : " + importantCheck.isChecked());
                             finish();
                             break;
                         }
