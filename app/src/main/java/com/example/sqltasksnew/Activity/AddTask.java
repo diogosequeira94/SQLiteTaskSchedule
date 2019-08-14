@@ -46,6 +46,13 @@ public class AddTask extends AppCompatActivity {
             //Notes Configuration
 
             notes.setText(actualTask.getNotes());
+
+
+            System.out.println(actualTask.getImage());
+            if(actualTask.getImage() == 1){
+                importantCheck.setChecked(true);
+            }
+
         }
 
 
@@ -106,7 +113,6 @@ public class AddTask extends AppCompatActivity {
                         if(taskDAO.update(task)){
 
                             finish();
-                            Toast.makeText(this, "Sucess updationg task", Toast.LENGTH_SHORT).show();
 
                         } else {
 
@@ -137,7 +143,6 @@ public class AddTask extends AppCompatActivity {
                         task.setTaskName(addTask.getText().toString());
                         if( taskDAO.save(task)){
                             Toast.makeText(getApplicationContext(), "Success adding task!", Toast.LENGTH_SHORT).show();
-                            System.out.println("Adding the Task Activity : " + importantCheck.isChecked());
                             finish();
                             break;
                         }

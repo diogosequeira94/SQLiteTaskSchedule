@@ -1,5 +1,6 @@
 package com.example.sqltasksnew.Adapter;
 
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             holder.imageView.setVisibility(View.GONE);
         }
 
+        if(!task.getNotes().isEmpty()){
+            holder.notes.setImageResource(R.drawable.ic_chat_black_24dp);
+        } else {
+            holder.notes.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -67,12 +74,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
         TextView task;
         ImageView imageView;
+        ImageView notes;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             task = itemView.findViewById(R.id.textTask);
             imageView = itemView.findViewById(R.id.priority);
+            notes = itemView.findViewById(R.id.notes);
 
 
         }
