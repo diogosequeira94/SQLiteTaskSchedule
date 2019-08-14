@@ -1,8 +1,10 @@
 package com.example.sqltasksnew.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -60,10 +62,22 @@ public class AddTask extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                TaskDAO taskDAO = new TaskDAO(getApplicationContext());
-                taskDAO.delete(actualTask);
-                Toast.makeText(AddTask.this, "Delete successfully", Toast.LENGTH_SHORT).show();
-                finish();
+                AlertDialog.Builder dialog = new AlertDialog.Builder(AddTask.this);
+                dialog.setTitle("Delete task");
+                dialog.setMessage("Are you sure you want to delete this task?");
+                dialog.setNegativeButton("No",null);
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        TaskDAO taskDAO = new TaskDAO(getApplicationContext());
+                        taskDAO.delete(actualTask);
+                        Toast.makeText(AddTask.this, "Delete successfully", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
+
+                dialog.create();
+                dialog.show();
 
 
             }
