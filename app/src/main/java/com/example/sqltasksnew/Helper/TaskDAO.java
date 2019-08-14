@@ -84,8 +84,26 @@ public class TaskDAO implements  TaskDAOImplementation {
 
      //   read.delete()
 
+        try {
 
-        return false;
+            String[] args = {task.getId().toString()};
+
+            write.delete(DatabaseHelper.TABLE_TASKS,"id=?", args );
+
+            Log.i("INFO", "DELETED WITH SUCESS");
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+
+            Log.i("INFO", "DELETED WITHOUT SUCESS");
+
+            return false;
+        }
+
+
+
+        return true;
     }
 
     @Override
