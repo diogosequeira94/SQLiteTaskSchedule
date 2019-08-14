@@ -66,8 +66,18 @@ public class AddTask extends AppCompatActivity {
                     if(!addTask.getText().toString().equals("")){
 
                         Task task = new Task();
+
                         task.setTaskName(addTask.getText().toString());
                         task.setId(actualTask.getId());
+
+                        if(importantCheck.isChecked()){
+
+                            task.setImage(1);
+
+                        } else {
+
+                            task.setImage(0);
+                        }
 
                         //Update method
 
@@ -94,12 +104,10 @@ public class AddTask extends AppCompatActivity {
 
                         if(importantCheck.isChecked()){
 
-                            task.setImportant(true);
                             task.setImage(1);
 
                         } else {
 
-                            task.setImportant(false);
                             task.setImage(0);
                         }
 

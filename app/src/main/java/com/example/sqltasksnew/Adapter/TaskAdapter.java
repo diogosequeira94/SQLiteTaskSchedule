@@ -47,8 +47,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         Task task = taskList.get(position);
         holder.task.setText(task.getTaskName());
 
-        System.out.println("O nome da task no adapter: " + task.getTaskName());
-        System.out.println("O valor da task no adapter: " + task.getImage());
+        if(task.getImage() == 0){
+            holder.imageView.setImageResource(R.drawable.ic_done_black_24dp);
+        } else {
+            holder.imageView.setImageResource(R.drawable.ic_priority_high_black_24dp);
+        }
 
 
 
