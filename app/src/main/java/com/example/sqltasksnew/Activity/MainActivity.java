@@ -12,6 +12,7 @@ import com.example.sqltasksnew.Model.Task;
 import com.example.sqltasksnew.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -67,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
             public void onLongItemClick(View view, int position) {
 
                 //Delete
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getApplicationContext());
+
+                dialog.setTitle("Delete Confimation");
 
             }
 

@@ -53,7 +53,30 @@ public class TaskDAO implements  TaskDAOImplementation {
 
     @Override
     public boolean update(Task task) {
-        return false;
+
+        ContentValues cv = new ContentValues();
+        cv.put("nome", task.getTaskName());
+
+        try{
+
+            String[] args = {task.getId().toString()};
+
+            write.update(DatabaseHelper.TABLE_TASKS, cv, "id=?", args  );
+
+
+            Log.i("INFO", "UPDATED WITH SUCESS");
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+
+            Log.i("INFO", "UPDATED WITHOUT SUCESS");
+
+            return false;
+        }
+
+
+        return true;
     }
 
     @Override

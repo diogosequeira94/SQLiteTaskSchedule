@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputEditText;
 public class AddTask extends AppCompatActivity {
 
     private TextInputEditText addTask;
+    private Task actualTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,14 @@ public class AddTask extends AppCompatActivity {
         setContentView(R.layout.activity_add_task);
 
         addTask = findViewById(R.id.task);
+
+        //Recovers actual Task
+        actualTask = (Task) getIntent().getSerializableExtra("chosenTask");
+
+        //EditText configuration
+        if(actualTask != null){
+            addTask.setText(actualTask.getTaskName());
+        }
 
     }
 
@@ -45,15 +54,51 @@ public class AddTask extends AppCompatActivity {
                 //DAO Data Access Object , usada para salvar e recuperar dados
                 TaskDAO taskDAO = new TaskDAO(getApplicationContext());
 
-                Task task = new Task();
-                task.setTaskName(addTask.getText().toString());
-                if(!addTask.getText().toString().equals("")){
-                    taskDAO.save(task);
-                    finish();
-                    break;
-                } else{
-                    Toast.makeText(getApplicationContext(), "Please insert a task!", Toast.LENGTH_SHORT).show();
+
+
+                if(actualTask != null){
+
+                    //Edition
+
+                    if(!addTask.getText().toString().equals("")){
+
+                        Task task = new Task();
+                        task.setTaskName(addTask.getText().toString());
+                        task.setId(actualTask.getId());
+
+                        //Update method
+
+                        if(taskDAO.update(task)){
+
+                            finish();
+                            Toast.makeText(this, "Sucess updationg task", Toast.LENGTH_SHORT).show();
+
+                        } else {
+
+                        }
+
+
+                    }
+
+
+                } else {
+
+                    if(!addTask.getText().toString().equals("")){
+
+                        Task task = new Task();
+                        task.setTaskName(addTask.getText().toString());
+                        if( taskDAO.save(task)){
+                            Toast.makeText(getApplicationContext(), "Success adding task!", Toast.LENGTH_SHORT).show();
+                            finish();
+                            break;
+                        }
+
+                    } else{
+                        Toast.makeText(getApplicationContext(), "Please insert a task!", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
+
 
 
 
