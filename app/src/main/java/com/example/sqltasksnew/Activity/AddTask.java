@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.example.sqltasksnew.Helper.TaskDAO;
@@ -18,6 +19,7 @@ public class AddTask extends AppCompatActivity {
 
     private TextInputEditText addTask;
     private Task actualTask;
+    private CheckBox importantCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,7 @@ public class AddTask extends AppCompatActivity {
         setContentView(R.layout.activity_add_task);
 
         addTask = findViewById(R.id.task);
+        importantCheck = findViewById(R.id.importantCheck);
 
         //Recovers actual Task
         actualTask = (Task) getIntent().getSerializableExtra("chosenTask");
@@ -83,9 +86,16 @@ public class AddTask extends AppCompatActivity {
 
                 } else {
 
+                    //Save
+
                     if(!addTask.getText().toString().equals("")){
 
                         Task task = new Task();
+
+                        if(importantCheck.isChecked()){
+                            task.setImportant(true);
+                        }
+
                         task.setTaskName(addTask.getText().toString());
                         if( taskDAO.save(task)){
                             Toast.makeText(getApplicationContext(), "Success adding task!", Toast.LENGTH_SHORT).show();

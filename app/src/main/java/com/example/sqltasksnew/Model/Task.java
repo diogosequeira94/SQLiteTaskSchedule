@@ -8,6 +8,7 @@ public class Task implements Serializable {
 
     private Long id;
     private String taskName;
+    private boolean important;
 
     public Long getId() {
         return id;
@@ -23,5 +24,13 @@ public class Task implements Serializable {
 
     public void setTaskName(String taskName) {
         this.taskName = taskName;
+    }
+
+    public boolean isImportant() {
+        return important;
+    }
+
+    public void setImportant(boolean important) {
+        this.important = important;
     }
 }

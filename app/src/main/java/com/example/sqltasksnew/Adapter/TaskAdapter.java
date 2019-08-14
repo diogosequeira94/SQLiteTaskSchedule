@@ -46,6 +46,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         Task task = taskList.get(position);
         holder.task.setText(task.getTaskName());
 
+
     }
 
     @Override
