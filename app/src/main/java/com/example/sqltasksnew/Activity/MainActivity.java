@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private TaskAdapter taskAdapter;
     private List<Task> taskList = new ArrayList<>();
     private Task selectedTask;
-    private TextView text;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
