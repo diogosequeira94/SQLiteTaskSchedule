@@ -12,12 +12,14 @@ import com.example.sqltasksnew.Helper.RecyclerItemClickListener;
 import com.example.sqltasksnew.Helper.TaskDAO;
 import com.example.sqltasksnew.Model.Task;
 import com.example.sqltasksnew.R;
+import com.example.sqltasksnew.Util.MyItemTouchHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLongItemClick(View view, int position) {
 
-                selectedTask = taskList.get(position);
+              /*  selectedTask = taskList.get(position);
 
                 //Delete
                 AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
@@ -105,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
 
                 dialog.create();
                 dialog.show();
+
+                */
             }
 
             @Override
@@ -159,7 +163,11 @@ public class MainActivity extends AppCompatActivity {
 
         //CallBack and attach to recyclerView
 
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+        ItemTouchHelper.Callback callback = new MyItemTouchHelper(taskAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        taskAdapter.setTouchHelper(itemTouchHelper);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
 
 
     }
@@ -188,26 +196,5 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
 
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
-
-
-            TaskDAO taskDAO = new TaskDAO(getApplicationContext());
-
-            selectedTask = taskList.get(viewHolder.getAdapterPosition());
-
-            taskDAO.delete(selectedTask);
-            taskAdapter.notifyDataSetChanged();
-            loadTaskList();
-
-
-        }
-    };
 }
