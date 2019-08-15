@@ -113,6 +113,7 @@ public class AddTask extends AppCompatActivity {
 
                         Task task = new Task();
 
+
                         task.setTaskName(addTask.getText().toString());
                         task.setNotes(notes.getText().toString());
                         task.setId(actualTask.getId());
@@ -120,7 +121,11 @@ public class AddTask extends AppCompatActivity {
                         if(importantCheck.isChecked()) {
 
                             task.setImage(1);
-                        }
+
+                        }  else {
+
+                        task.setImage(0);
+                    }
 
                         //Update method
 

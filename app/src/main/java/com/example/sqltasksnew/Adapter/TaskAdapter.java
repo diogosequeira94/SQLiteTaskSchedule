@@ -1,9 +1,11 @@
 package com.example.sqltasksnew.Adapter;
 
-import android.media.Image;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,15 +15,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sqltasksnew.Model.Task;
 import com.example.sqltasksnew.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
+public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> implements Filterable {
 
     private List<Task> taskList;
+    private List<Task> taskListSearch;
+
+    //We should create a copy of the list to use for the Search Box, to manipulate it
 
 
     public TaskAdapter(List<Task> list) {
         this.taskList = list;
+        taskListSearch = new ArrayList<>(list);
 
     }
 
@@ -67,6 +74,46 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         return this.taskList.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return myFilter;
+    }
+
+    private Filter myFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+
+        List<Task> filteredList = new ArrayList<>();
+
+        if(charSequence == null || charSequence.length() == 0){
+            filteredList.addAll(taskListSearch);
+
+        } else {
+
+            String filterPattern = charSequence.toString().toLowerCase().trim();
+
+            for (Task task : taskListSearch){
+                if(task.getTaskName().toLowerCase().contains(filterPattern)){
+                    filteredList.add(task);
+                }
+            }
+        }
+
+        FilterResults results = new FilterResults();
+        results.values = filteredList;
+
+        return results;
+
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+
+            taskList.clear();
+            taskList.addAll((List) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 
     //Inner Class
 
@@ -86,4 +133,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
         }
     }
+
+
+
 }

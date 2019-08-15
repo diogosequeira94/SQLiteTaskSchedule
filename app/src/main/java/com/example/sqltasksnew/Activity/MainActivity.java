@@ -28,10 +28,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Task> taskList = new ArrayList<>();
     private Task selectedTask;
     private boolean isDecorated;
-    private TextView text;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        searchView = findViewById(R.id.searchBox);
+
 
         //RecyclerViewConfig
         recyclerView = findViewById(R.id.recyclerView);
@@ -126,6 +131,20 @@ public class MainActivity extends AppCompatActivity {
 
         loadTaskList();
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                taskAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+
 
     }
 
@@ -158,6 +177,9 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
             isDecorated = true;
         }
+
+        //List Reverse
+        Collections.reverse(taskList);
 
 
         recyclerView.setAdapter(taskAdapter);

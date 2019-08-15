@@ -138,6 +138,7 @@ public class TaskDAO implements  TaskDAOImplementation {
             task.setNotes(notas);
 
             myTasks.add(task);
+
         }
 
 
