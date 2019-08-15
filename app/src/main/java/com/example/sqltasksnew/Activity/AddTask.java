@@ -3,7 +3,9 @@ package com.example.sqltasksnew.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +15,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sqltasksnew.Helper.TaskDAO;
@@ -21,13 +25,19 @@ import com.example.sqltasksnew.Model.Task;
 import com.example.sqltasksnew.R;
 import com.google.android.material.textfield.TextInputEditText;
 
-public class AddTask extends AppCompatActivity {
+import org.w3c.dom.Text;
+
+import java.text.DateFormat;
+import java.util.Calendar;
+
+public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private TextInputEditText addTask;
     private Task actualTask;
     private CheckBox importantCheck;
     private Button buttonDelete;
     private EditText notes;
+    private TextView deadline;
 
 
     @Override
@@ -46,6 +56,18 @@ public class AddTask extends AppCompatActivity {
         // To prevent keyboard from popping
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        //gets the deadline text
+        deadline = findViewById(R.id.deadline);
+
+        deadline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment datePicker = new com.example.sqltasksnew.Utils.DatePicker();
+                datePicker.show(getSupportFragmentManager(), "date picker");
+            }
+        });
+
 
         //EditText configuration
         if(actualTask != null){
@@ -87,6 +109,21 @@ public class AddTask extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    //Calender
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, i);
+        c.set(Calendar.MONTH, i1);
+        c.set(Calendar.DAY_OF_MONTH, i2);
+
+        String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+
+        deadline.setText(currentDate);
 
     }
 

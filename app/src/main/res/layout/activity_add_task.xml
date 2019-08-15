@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="100dp"
         android:text="Mark as Important"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,14 +43,14 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
-        android:scrollbars="vertical"
-        android:hint="Write some notes here"
         android:background="#F0F0F0"
-        android:padding="10dp"
         android:ems="10"
         android:gravity="start|top"
+        android:hint="Write some notes here"
         android:inputType="textMultiLine"
         android:maxLines="3"
+        android:padding="10dp"
+        android:scrollbars="vertical"
         app:layout_constraintEnd_toEndOf="@+id/buttonDelete"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="46dp"
+        android:layout_marginTop="68dp"
         android:text="Notes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/importantCheck" />
@@ -73,14 +73,25 @@
         android:layout_marginStart="161dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="161dp"
-        android:text="Delete Task"
-
         android:background="#ffc04c"
+
+        android:text="Delete Task"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myNotes" />
+
+    <TextView
+        android:id="@+id/deadline"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="28dp"
+        android:text="Set a deadline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/importantCheck" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
