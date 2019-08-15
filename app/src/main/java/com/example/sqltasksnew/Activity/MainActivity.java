@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private TaskAdapter taskAdapter;
     private List<Task> taskList = new ArrayList<>();
     private Task selectedTask;
+    private boolean isDecorated;
     private TextView text;
 
     @Override
@@ -153,7 +154,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         //Adds a Line
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
+        if(!isDecorated){
+            recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
+            isDecorated = true;
+        }
+
 
         recyclerView.setAdapter(taskAdapter);
 
