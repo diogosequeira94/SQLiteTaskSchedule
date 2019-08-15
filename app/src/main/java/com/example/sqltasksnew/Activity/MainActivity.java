@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         searchView = findViewById(R.id.searchBox);
-
+        searchView.setQueryHint("Search for a task");
 
         //RecyclerViewConfig
         recyclerView = findViewById(R.id.recyclerView);

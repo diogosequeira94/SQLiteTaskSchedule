@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -41,6 +42,10 @@ public class AddTask extends AppCompatActivity {
 
         //Recovers actual Task
         actualTask = (Task) getIntent().getSerializableExtra("chosenTask");
+
+        // To prevent keyboard from popping
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         //EditText configuration
         if(actualTask != null){
