@@ -8,7 +8,8 @@ public class Task implements Serializable {
 
     private Long id;
     private String taskName;
-    private boolean important;
+    private int image;
+    private String notes;
 
     public Long getId() {
         return id;
@@ -26,11 +27,20 @@ public class Task implements Serializable {
         this.taskName = taskName;
     }
 
-    public boolean isImportant() {
-        return important;
+
+    public void setImage(int image) {
+        this.image = image;
     }
 
-    public void setImportant(boolean important) {
-        this.important = important;
+    public int getImage() {
+        return image;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

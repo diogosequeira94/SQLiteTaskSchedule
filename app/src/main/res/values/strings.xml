@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">SQLTasksNew</string>
+    <string name="app_name">TaskScheduler</string>
     <string name="action_settings">Settings</string>
 </resources>

@@ -26,37 +26,32 @@
             android:hint="Add a task" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Switch
-        android:id="@+id/switch1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="32dp"
-        android:text="Active"
-        app:layout_constraintBottom_toTopOf="@+id/importantCheck"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <CheckBox
         android:id="@+id/importantCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="197dp"
-        android:text="Important"
+        android:layout_marginTop="128dp"
+        android:text="Mark as Important"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/myNotes"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
+        android:scrollbars="vertical"
+        android:hint="Write some notes here"
+        android:background="#F0F0F0"
+        android:padding="10dp"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="@+id/button"
+        android:maxLines="3"
+        app:layout_constraintEnd_toEndOf="@+id/buttonDelete"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -72,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@+id/importantCheck" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonDelete"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="161dp"
@@ -85,7 +80,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/myNotes" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
