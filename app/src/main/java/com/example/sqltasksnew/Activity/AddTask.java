@@ -38,6 +38,7 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
     private Button buttonDelete;
     private EditText notes;
     private TextView deadline;
+    private String currentDate;
 
 
     @Override
@@ -49,16 +50,13 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
         importantCheck = findViewById(R.id.importantCheck);
         buttonDelete = findViewById(R.id.buttonDelete);
         notes = findViewById(R.id.myNotes);
-
-        //Recovers actual Task
-        actualTask = (Task) getIntent().getSerializableExtra("chosenTask");
+        deadline = findViewById(R.id.deadline);
 
         // To prevent keyboard from popping
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         //gets the deadline text
-        deadline = findViewById(R.id.deadline);
 
         deadline.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,13 +66,46 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
             }
         });
 
+        deadline.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                AlertDialog.Builder dialog = new AlertDialog.Builder(AddTask.this);
+                dialog.setTitle("Remove deadline");
+                dialog.setMessage("Are you sure you want to remove this deadline?");
+                dialog.setNegativeButton("No",null);
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        deadline.setText("Set a deadline");
+                    }
+                });
+
+                dialog.create();
+                dialog.show();
+
+                return true;
+            }
+        });
+
+        //Recovers actual Task
+        actualTask = (Task) getIntent().getSerializableExtra("chosenTask");
+
 
         //EditText configuration
         if(actualTask != null){
             addTask.setText(actualTask.getTaskName());
-            //Notes Configuration
 
+            //Notes Configuration
             notes.setText(actualTask.getNotes());
+
+            //deadline Configuration
+
+            if(actualTask.getDeadline() != null){
+
+                deadline.setText(actualTask.getDeadline());
+            }
+
 
 
             System.out.println(actualTask.getImage());
@@ -121,9 +152,11 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
         c.set(Calendar.MONTH, i1);
         c.set(Calendar.DAY_OF_MONTH, i2);
 
-        String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+        currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
 
         deadline.setText(currentDate);
+
+        System.out.println("New deadline: " + currentDate);
 
     }
 
@@ -159,6 +192,10 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
                         task.setTaskName(addTask.getText().toString());
                         task.setNotes(notes.getText().toString());
                         task.setId(actualTask.getId());
+                        task.setDeadline(deadline.getText().toString());
+                        System.out.println("Gravado com: " + currentDate);
+
+                        System.out.println(actualTask.getDeadline());
 
                         if(importantCheck.isChecked()) {
 
@@ -202,6 +239,8 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
 
                         task.setNotes(notes.getText().toString());
                         task.setTaskName(addTask.getText().toString());
+                        task.setDeadline(currentDate);
+
                         if( taskDAO.save(task)){
                             Toast.makeText(getApplicationContext(), "Success adding task!", Toast.LENGTH_SHORT).show();
                             finish();

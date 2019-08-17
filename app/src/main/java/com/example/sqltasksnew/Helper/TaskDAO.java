@@ -35,6 +35,7 @@ public class TaskDAO implements  TaskDAOImplementation {
             cv.put("nome", task.getTaskName());
             cv.put("image", task.getImage());
             cv.put("notas", task.getNotes());
+            cv.put("deadline", task.getDeadline());
 
 
 
@@ -65,6 +66,7 @@ public class TaskDAO implements  TaskDAOImplementation {
         cv.put("nome", task.getTaskName());
         cv.put("image", task.getImage());
         cv.put("notas", task.getNotes());
+        cv.put("deadline", task.getDeadline());
 
         try{
 
@@ -131,11 +133,13 @@ public class TaskDAO implements  TaskDAOImplementation {
             String name = c.getString(c.getColumnIndex("nome"));
             int image = c.getInt(c.getColumnIndex("image"));
             String notas = c.getString(c.getColumnIndex("notas"));
+            String deadline = c.getString(c.getColumnIndex("deadline"));
 
             task.setId(id);
             task.setTaskName(name);
             task.setImage(image);
             task.setNotes(notas);
+            task.setDeadline(deadline);
 
             myTasks.add(task);
 

@@ -10,6 +10,7 @@ public class Task implements Serializable {
     private String taskName;
     private int image;
     private String notes;
+    private String deadline;
 
     public Long getId() {
         return id;
@@ -42,5 +43,13 @@ public class Task implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
     }
 }
