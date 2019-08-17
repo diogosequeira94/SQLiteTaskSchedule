@@ -9,6 +9,9 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -55,6 +58,7 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
     private TextView deadline;
     private String currentDate;
     private boolean hasNotification;
+    private ImageView clipboard;
 
     //Notifications
     private ImageView notification;
@@ -87,6 +91,7 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
         deadline = findViewById(R.id.deadline);
         notification = findViewById(R.id.notification);
         placeholder = findViewById(R.id.placeholder);
+        clipboard = findViewById(R.id.clipboard);
 
 
         // To prevent keyboard from popping
@@ -314,7 +319,58 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
             }
         });
 
+        clipboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+
+                if (actualTask != null){
+                    ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("Note", allData());
+                    clipboardManager.setPrimaryClip(clip);
+
+                    Toast.makeText(getApplicationContext(), "Copied to clipboard", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    Toast.makeText(AddTask.this, "You should save a task before copying it", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
+
+
+    }
+
+    // This method will return me all the current data in my task
+
+    public String allData(){
+
+        String info = "";
+        String notas;
+        String deadline;
+
+        if(actualTask != null){
+            if(actualTask.getNotes() == null || actualTask.getNotes().equals("")) {
+                notas = "No notes for this task";
+
+            } else {
+                notas = actualTask.getNotes();
+            }
+
+            if (actualTask.getDeadline() == null || actualTask.getDeadline().equals("Set a deadline")){
+                deadline = "No deadline";
+
+            } else{
+                deadline = actualTask.getDeadline();
+            }
+
+            info = "Task name: \n" + actualTask.getTaskName() +  "\n\n" + "Deadline: \n"  + deadline+ "\n\n" + "Notes: \n" + notas;
+
+        }
+
+
+        return info;
     }
 
 
