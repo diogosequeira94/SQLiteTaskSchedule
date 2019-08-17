@@ -1,23 +1,34 @@
 package com.example.sqltasksnew.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +41,7 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Calendar;
 
@@ -50,6 +62,15 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
     private TimePickerDialog timePickerDialog;
     private com.wdullaer.materialdatetimepicker.date.DatePickerDialog datePickerDialog;
 
+    //Gallery
+    private ImageView placeholder;
+    private static final int PICK_IMAGE = 1;
+    private Uri imageURI;
+    private boolean isLoaded;
+    private boolean isImageFitToScreen;
+    private int originalHeight;
+    private int originalWidth;
+
 
 
 
@@ -65,6 +86,8 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
         notes = findViewById(R.id.myNotes);
         deadline = findViewById(R.id.deadline);
         notification = findViewById(R.id.notification);
+        placeholder = findViewById(R.id.placeholder);
+
 
         // To prevent keyboard from popping
 
@@ -213,9 +236,111 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
             }
         });
 
+        //Setting image from gallery
+
+        placeholder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (isLoaded){
+
+                        //Image gets bigger on click CHANGE THIS
+
+
+                    if(isImageFitToScreen){
+
+                        isImageFitToScreen = false;
+                        placeholder.getLayoutParams().height = originalHeight * 2;
+                        placeholder.getLayoutParams().width = originalWidth * 2;
+
+                        //Need to center the image
+
+
+                        ConstraintLayout myLayout = new ConstraintLayout(getApplicationContext());
+                        myLayout.setBackgroundColor(Color.BLACK);
+
+                        ((ViewGroup)placeholder.getParent()).removeView(placeholder);
+
+                        myLayout.addView(placeholder);
+                        setContentView(myLayout);
+
+                        ConstraintSet set = new ConstraintSet();
+
+                        set.constrainHeight(placeholder.getId(),
+                                ConstraintSet.WRAP_CONTENT);
+                        set.constrainWidth(placeholder.getId(),
+                                ConstraintSet.WRAP_CONTENT);
+
+                        set.connect(placeholder.getId(), ConstraintSet.LEFT,
+                                ConstraintSet.PARENT_ID, ConstraintSet.LEFT, 0);
+                        set.connect(placeholder.getId(), ConstraintSet.RIGHT,
+                                ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 0);
+                        set.connect(placeholder.getId(), ConstraintSet.TOP,
+                                ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0);
+                        set.connect(placeholder.getId(), ConstraintSet.BOTTOM,
+                                ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
+
+                        set.applyTo(myLayout);
 
 
 
+                        view.requestLayout();
+
+
+
+
+                    } else {
+
+
+                        placeholder.getLayoutParams().height = originalHeight;
+                        placeholder.getLayoutParams().width = originalWidth;
+
+                        isImageFitToScreen=true;
+                        view.requestLayout();
+
+                    }
+
+                } else {
+
+                    Intent gallery = new Intent();
+                    gallery.setType("image/*");
+                    gallery.setAction(Intent.ACTION_GET_CONTENT);
+
+                    startActivityForResult(Intent.createChooser(gallery, "Select Picture"), PICK_IMAGE);
+                }
+
+
+
+            }
+        });
+
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK){
+            imageURI = data.getData();
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageURI);
+                placeholder.setImageBitmap(bitmap);
+
+                originalHeight = placeholder.getLayoutParams().height;
+                originalWidth = placeholder.getLayoutParams().width;
+
+                System.out.println(originalHeight);
+                System.out.println(originalWidth);
+
+                isLoaded = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     //Calender
