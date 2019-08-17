@@ -11,6 +11,7 @@ public class Task implements Serializable {
     private int image;
     private String notes;
     private String deadline;
+    private int notification; //This should be a boolean
 
     public Long getId() {
         return id;
@@ -51,5 +52,13 @@ public class Task implements Serializable {
 
     public void setDeadline(String deadline) {
         this.deadline = deadline;
+    }
+
+    public int getNotification() {
+        return notification;
+    }
+
+    public void setNotification(int notification) {
+        this.notification = notification;
     }
 }

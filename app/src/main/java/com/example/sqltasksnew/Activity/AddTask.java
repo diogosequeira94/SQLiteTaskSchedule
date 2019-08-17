@@ -17,20 +17,23 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.allyants.notifyme.NotifyMe;
 import com.example.sqltasksnew.Helper.TaskDAO;
 import com.example.sqltasksnew.Model.Task;
 import com.example.sqltasksnew.R;
 import com.google.android.material.textfield.TextInputEditText;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.util.Calendar;
 
-public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener, com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
 
     private TextInputEditText addTask;
     private Task actualTask;
@@ -39,6 +42,16 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
     private EditText notes;
     private TextView deadline;
     private String currentDate;
+    private boolean hasNotification;
+
+    //Notifications
+    private ImageView notification;
+    private Calendar now = Calendar.getInstance();
+    private TimePickerDialog timePickerDialog;
+    private com.wdullaer.materialdatetimepicker.date.DatePickerDialog datePickerDialog;
+
+
+
 
 
     @Override
@@ -51,6 +64,7 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
         buttonDelete = findViewById(R.id.buttonDelete);
         notes = findViewById(R.id.myNotes);
         deadline = findViewById(R.id.deadline);
+        notification = findViewById(R.id.notification);
 
         // To prevent keyboard from popping
 
@@ -88,6 +102,7 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
             }
         });
 
+
         //Recovers actual Task
         actualTask = (Task) getIntent().getSerializableExtra("chosenTask");
 
@@ -111,6 +126,11 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
             System.out.println(actualTask.getImage());
             if(actualTask.getImage() == 1){
                 importantCheck.setChecked(true);
+            }
+
+            if(actualTask.getNotification() == 1){
+                notification.setImageResource(R.drawable.ic_alarm_off_black_24dp);
+                hasNotification = true;
             }
 
         }
@@ -140,6 +160,61 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
 
             }
         });
+
+
+        //New Notification Dialogs
+
+        datePickerDialog = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
+                AddTask.this,
+                now.get(Calendar.YEAR), // Initial year selection
+                now.get(Calendar.MONTH), // Initial month selection
+                now.get(Calendar.DAY_OF_MONTH) // Inital day selection
+        );
+
+        timePickerDialog = com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInstance(
+                AddTask.this,
+                now.get(Calendar.HOUR_OF_DAY),
+                now.get(Calendar.MINUTE),
+                now.get(Calendar.SECOND),
+                false
+
+
+        );
+
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(hasNotification){
+
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(AddTask.this);
+                    dialog.setTitle("Remove alert");
+                    dialog.setMessage("Are you sure you want to remove this reminder?");
+                    dialog.setNegativeButton("No",null);
+                    dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            NotifyMe.cancel(getApplicationContext(),"test");
+                            hasNotification = false;
+                            notification.setImageResource(R.drawable.ic_add_alarm_black_24dp);
+                            Toast.makeText(AddTask.this, "Removed successfully", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+
+                    dialog.create();
+                    dialog.show();
+
+                } else {
+                    datePickerDialog.show(getFragmentManager(), "Datepicker");
+                }
+
+
+            }
+        });
+
+
+
 
     }
 
@@ -193,6 +268,8 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
                         task.setNotes(notes.getText().toString());
                         task.setId(actualTask.getId());
                         task.setDeadline(deadline.getText().toString());
+
+
                         System.out.println("Gravado com: " + currentDate);
 
                         System.out.println(actualTask.getDeadline());
@@ -205,6 +282,16 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
 
                         task.setImage(0);
                     }
+
+                        if(hasNotification) {
+
+                            task.setNotification(1);
+
+                        }  else {
+
+                            task.setNotification(0);
+                        }
+
 
                         //Update method
 
@@ -237,12 +324,20 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
                             task.setImage(0);
                         }
 
+                        if(hasNotification){
+
+                            task.setNotification(1);
+                        } else {
+                            task.setNotification(0);
+                        }
+
                         task.setNotes(notes.getText().toString());
                         task.setTaskName(addTask.getText().toString());
                         task.setDeadline(currentDate);
 
                         if( taskDAO.save(task)){
                             Toast.makeText(getApplicationContext(), "Success adding task!", Toast.LENGTH_SHORT).show();
+                            System.out.println("saved with: " + task.getNotification());
                             finish();
                             break;
                         }
@@ -259,4 +354,52 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    //Notifications
+
+    @Override
+    public void onDateSet(com.wdullaer.materialdatetimepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+
+        now.set(Calendar.YEAR, year);
+        now.set(Calendar.MONTH, monthOfYear);
+        now.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        timePickerDialog.show(getFragmentManager(), "Timepickerdialog");
+    }
+
+    @Override
+    public void onTimeSet(com.wdullaer.materialdatetimepicker.time.TimePickerDialog view, int hourOfDay, int minute, int second) {
+
+        now.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        now.set(Calendar.MINUTE, minute);
+        now.set(Calendar.SECOND, second);
+
+        //Initialize notification
+
+        NotifyMe notifyMe = new NotifyMe.Builder(getApplicationContext())
+                .title("Task Reminder")
+                .content(addTask.getText().toString())
+                .color(255,192,76,1)
+                .led_color(255,255,255,255)
+                .time(now)
+                .addAction(new Intent(), "Snooze", false)
+                .key("test")
+                .addAction(new Intent(), "Dismiss", true, false)
+                .addAction(new Intent(), "Done")
+                .large_icon(R.drawable.maincion)
+                .build();
+
+        Toast.makeText(getApplicationContext(), "Notification added", Toast.LENGTH_SHORT).show();
+        notification.setImageResource(R.drawable.ic_alarm_off_black_24dp);
+        hasNotification = true;
+
+
+
+
+    }
+
+
+
+
+
 }
