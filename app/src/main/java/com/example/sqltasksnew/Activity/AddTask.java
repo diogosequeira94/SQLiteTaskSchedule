@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -71,9 +73,10 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
     private static final int PICK_IMAGE = 1;
     private Uri imageURI;
     private boolean isLoaded;
-    private boolean isImageFitToScreen;
     private int originalHeight;
     private int originalWidth;
+    private Dialog myDialog;
+    private ImageView popUpImage;
 
 
 
@@ -92,6 +95,11 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
         notification = findViewById(R.id.notification);
         placeholder = findViewById(R.id.placeholder);
         clipboard = findViewById(R.id.clipboard);
+
+        myDialog = new Dialog(this);
+        myDialog.setContentView(R.layout.custompopup);
+        popUpImage = myDialog.findViewById(R.id.popUpImage);
+
 
 
         // To prevent keyboard from popping
@@ -252,58 +260,8 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
                         //Image gets bigger on click CHANGE THIS
 
 
-                    if(isImageFitToScreen){
+                        showPopUp();
 
-                        isImageFitToScreen = false;
-                        placeholder.getLayoutParams().height = originalHeight * 2;
-                        placeholder.getLayoutParams().width = originalWidth * 2;
-
-                        //Need to center the image
-
-
-                        ConstraintLayout myLayout = new ConstraintLayout(getApplicationContext());
-                        myLayout.setBackgroundColor(Color.BLACK);
-
-                        ((ViewGroup)placeholder.getParent()).removeView(placeholder);
-
-                        myLayout.addView(placeholder);
-                        setContentView(myLayout);
-
-                        ConstraintSet set = new ConstraintSet();
-
-                        set.constrainHeight(placeholder.getId(),
-                                ConstraintSet.WRAP_CONTENT);
-                        set.constrainWidth(placeholder.getId(),
-                                ConstraintSet.WRAP_CONTENT);
-
-                        set.connect(placeholder.getId(), ConstraintSet.LEFT,
-                                ConstraintSet.PARENT_ID, ConstraintSet.LEFT, 0);
-                        set.connect(placeholder.getId(), ConstraintSet.RIGHT,
-                                ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 0);
-                        set.connect(placeholder.getId(), ConstraintSet.TOP,
-                                ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0);
-                        set.connect(placeholder.getId(), ConstraintSet.BOTTOM,
-                                ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
-
-                        set.applyTo(myLayout);
-
-
-
-                        view.requestLayout();
-
-
-
-
-                    } else {
-
-
-                        placeholder.getLayoutParams().height = originalHeight;
-                        placeholder.getLayoutParams().width = originalWidth;
-
-                        isImageFitToScreen=true;
-                        view.requestLayout();
-
-                    }
 
                 } else {
 
@@ -316,6 +274,36 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
 
 
 
+            }
+        });
+
+        placeholder.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+            if(isLoaded){
+                AlertDialog.Builder dialog = new AlertDialog.Builder(AddTask.this);
+                dialog.setTitle("Remove image");
+                dialog.setMessage("Are you sure you want to remove this image?");
+
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        NotifyMe.cancel(getApplicationContext(),"test");
+                        placeholder.setImageResource(R.drawable.phicon);
+                        isLoaded = false;
+                        Toast.makeText(AddTask.this, "Removed successfully", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                });
+                dialog.setNegativeButton("No",null);
+                dialog.create();
+                dialog.show();
+            }
+
+
+                return true;
             }
         });
 
@@ -338,6 +326,26 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
 
             }
         });
+
+
+        popUpImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myDialog.dismiss();
+            }
+        });
+
+
+    }
+
+
+
+    //Method to show pop-up image
+
+    public void showPopUp(){
+
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialog.show();
 
 
     }
@@ -384,6 +392,7 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageURI);
                 placeholder.setImageBitmap(bitmap);
+                popUpImage.setImageBitmap(bitmap);
 
                 originalHeight = placeholder.getLayoutParams().height;
                 originalWidth = placeholder.getLayoutParams().width;
@@ -573,7 +582,6 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
         Toast.makeText(getApplicationContext(), "Notification added", Toast.LENGTH_SHORT).show();
         notification.setImageResource(R.drawable.ic_alarm_off_black_24dp);
         hasNotification = true;
-
 
 
 
