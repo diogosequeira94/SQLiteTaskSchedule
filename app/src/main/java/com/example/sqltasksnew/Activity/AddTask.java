@@ -27,6 +27,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -34,6 +36,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +53,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Calendar;
 
-public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener, com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
+public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener, com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener {
 
     private TextInputEditText addTask;
     private Task actualTask;
@@ -61,6 +64,7 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
     private String currentDate;
     private boolean hasNotification;
     private ImageView clipboard;
+    private Spinner spinner;
 
     //Notifications
     private ImageView notification;
@@ -78,6 +82,9 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
     private Dialog myDialog;
     private ImageView popUpImage;
 
+    //Spinner detail
+    private String spinnerChoice;
+
 
 
 
@@ -90,6 +97,7 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
         addTask = findViewById(R.id.task);
         importantCheck = findViewById(R.id.importantCheck);
         buttonDelete = findViewById(R.id.buttonDelete);
+        spinner = findViewById(R.id.spinner);
         notes = findViewById(R.id.myNotes);
         deadline = findViewById(R.id.deadline);
         notification = findViewById(R.id.notification);
@@ -99,6 +107,12 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
         myDialog = new Dialog(this);
         myDialog.setContentView(R.layout.custompopup);
         popUpImage = myDialog.findViewById(R.id.popUpImage);
+
+        //Populate Spinner
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.category, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
 
 
 
@@ -157,6 +171,9 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
                 deadline.setText(actualTask.getDeadline());
             }
 
+            //Really bad way
+
+            setSpinnerChoice();
 
 
             System.out.println(actualTask.getImage());
@@ -350,6 +367,49 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
 
     }
 
+
+
+    //Spinner Methods
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+        String text = adapterView.getItemAtPosition(i).toString();
+        spinnerChoice = adapterView.getItemAtPosition(i).toString();
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+    public void setSpinnerChoice(){
+
+        switch (actualTask.getCategory()){
+            case "Personal" :
+                spinner.setSelection(0);
+                break;
+            case "Hobby" :
+                spinner.setSelection(1);
+                break;
+            case "Work" :
+                spinner.setSelection(2);
+                break;
+            case "Housework" :
+                spinner.setSelection(3);
+                break;
+            case "Leisure" :
+                spinner.setSelection(4);
+                break;
+            case "Social" :
+                spinner.setSelection(5);
+                break;
+        }
+
+    }
+
+
     // This method will return me all the current data in my task
 
     public String allData(){
@@ -458,6 +518,7 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
                         task.setNotes(notes.getText().toString());
                         task.setId(actualTask.getId());
                         task.setDeadline(deadline.getText().toString());
+                        task.setCategory(spinnerChoice);
 
 
                         System.out.println("Gravado com: " + currentDate);
@@ -524,6 +585,7 @@ public class AddTask extends AppCompatActivity implements DatePickerDialog.OnDat
                         task.setNotes(notes.getText().toString());
                         task.setTaskName(addTask.getText().toString());
                         task.setDeadline(currentDate);
+                        task.setCategory(spinnerChoice);
 
                         if( taskDAO.save(task)){
                             Toast.makeText(getApplicationContext(), "Success adding task!", Toast.LENGTH_SHORT).show();

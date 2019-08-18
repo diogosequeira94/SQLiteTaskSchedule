@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">TaskScheduler</string>
     <string name="action_settings">Settings</string>
+    <string-array name="category">
+        <item>Personal</item>
+        <item>Hobby</item>
+        <item>Work</item>
+        <item>Housework</item>
+        <item>Leisure</item>
+        <item>Social</item>
+    </string-array>
 </resources>

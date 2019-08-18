@@ -10,6 +10,7 @@ public class Task implements Serializable {
     private String taskName;
     private int image;
     private String notes;
+    private String category;
     private String deadline;
     private int notification; //This should be a boolean
 
@@ -60,5 +61,13 @@ public class Task implements Serializable {
 
     public void setNotification(int notification) {
         this.notification = notification;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

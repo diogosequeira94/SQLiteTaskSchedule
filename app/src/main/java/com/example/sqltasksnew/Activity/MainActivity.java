@@ -12,6 +12,7 @@ import com.example.sqltasksnew.Helper.RecyclerItemClickListener;
 import com.example.sqltasksnew.Helper.TaskDAO;
 import com.example.sqltasksnew.Model.Task;
 import com.example.sqltasksnew.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
@@ -144,6 +145,12 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
+
+        //New bottom nav
+
+       // BottomNavigationView bottomNavigationView = findViewById(R.id.);
 
 
     }

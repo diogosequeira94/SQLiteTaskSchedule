@@ -54,6 +54,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
         Task task = taskList.get(position);
         holder.task.setText(task.getTaskName());
+        holder.category.setText(task.getCategory());
 
         if(task.getImage() == 1) {
             holder.imageView.setImageResource(R.drawable.ic_priority_high_black_24dp);
@@ -119,7 +120,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView task;
+        TextView task, category;
         ImageView imageView;
         ImageView notes;
 
@@ -127,6 +128,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             super(itemView);
 
             task = itemView.findViewById(R.id.textTask);
+            category = itemView.findViewById(R.id.textCategory);
             imageView = itemView.findViewById(R.id.priority);
             notes = itemView.findViewById(R.id.notes);
 
