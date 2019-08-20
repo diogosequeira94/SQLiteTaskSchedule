@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     tools:context=".Activity.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -20,7 +21,42 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+
+
     <include layout="@layout/content_main" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="10dp">
+
+        <TextView
+            android:id="@+id/greeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello there, Diogo!"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="103dp"
+            tools:layout_editor_absoluteY="467dp" />
+
+        <TextView
+            android:id="@+id/taskNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You have: 3 tasks for today!"
+            android:layout_marginTop="15dp"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            tools:layout_editor_absoluteX="103dp"
+            tools:layout_editor_absoluteY="467dp" />
+
+    </LinearLayout>
+
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -30,5 +66,17 @@
         android:layout_margin="@dimen/fab_margin"
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_add_black_24dp" />
+
+
+    <!--
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:background="#F0F0F0"
+        app:menu="@menu/bottom_navigation_menu"/>
+
+-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

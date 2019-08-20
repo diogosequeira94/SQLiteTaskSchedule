@@ -8,6 +8,11 @@
     tools:context=".Activity.MainActivity"
     tools:showIn="@layout/activity_main">
 
+
+
+
+
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linearLayoutCompat"
         android:layout_width="0dp"
@@ -17,13 +22,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <SearchView
-            android:id="@+id/searchBox"
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="138dp"
-            tools:layout_editor_absoluteY="-42dp" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/header5"
+            android:adjustViewBounds="true" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
