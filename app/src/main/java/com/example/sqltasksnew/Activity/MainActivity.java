@@ -12,6 +12,7 @@ import com.example.sqltasksnew.Helper.RecyclerItemClickListener;
 import com.example.sqltasksnew.Helper.TaskDAO;
 import com.example.sqltasksnew.Model.Task;
 import com.example.sqltasksnew.R;
+import com.example.sqltasksnew.Utils.MyCalendar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -37,6 +38,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,8 +47,16 @@ public class MainActivity extends AppCompatActivity {
     private TaskAdapter taskAdapter;
     private List<Task> taskList = new ArrayList<>();
     private Task selectedTask;
+    private TextView taskNumber;
     private boolean isDecorated;
-    private SearchView searchView;
+    private TaskDAO taskDAO;
+
+    //getting the list to display the number of tasks
+    private List<Task> taskArrayList = new ArrayList<>();
+    private MyCalendar myCalendar;
+    private int numberOfTasks;
+    private String currentData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +65,18 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        searchView = findViewById(R.id.searchBox);
-        searchView.setQueryHint("Search for a task");
+
+        taskNumber = findViewById(R.id.taskNumber);
+        taskDAO = new TaskDAO(getApplicationContext());
+        taskArrayList = taskDAO.list();
+
+        // Get current data
+        myCalendar = new MyCalendar();
+        currentData = myCalendar.getCurrentDate();
+
+        // Change text header
+
+
 
         //RecyclerViewConfig
         recyclerView = findViewById(R.id.recyclerView);
@@ -132,27 +153,30 @@ public class MainActivity extends AppCompatActivity {
         });
 
         loadTaskList();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-
-                taskAdapter.getFilter().filter(s);
-                return false;
-            }
-        });
-
-
+    //    updateTaskNumber();
 
         //New bottom nav
 
-       // BottomNavigationView bottomNavigationView = findViewById(R.id.);
+      /* BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
+       bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+           @Override
+           public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+               switch (menuItem.getItemId()){
 
+                   case R.id.ic_arrow:
+
+                   case R.id.ic_add:
+                       startActivity(new Intent(getApplicationContext(), AddTask.class));
+
+                   case R.id.ic_settings:
+
+               }
+
+
+               return false;
+           }
+       });
+*/
 
     }
 
@@ -160,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
 
         loadTaskList();
+     //   updateTaskNumber();
         super.onStart();
     }
 
@@ -270,4 +295,29 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    //Method to updateNumberofTasks;
+
+  /*  public void updateTaskNumber(){
+
+
+        for (Task task : taskArrayList){
+
+            String taskDate = task.getDeadline();
+
+            System.out.println(task.getDeadline());
+            System.out.println(currentData);
+
+            if (!currentData.equals(taskDate))
+            {
+                numberOfTasks++;
+
+            }
+        }
+
+        taskNumber.setText("You have: " + numberOfTasks + " tasks for today.");
+
+    }
+
+    */
 }
