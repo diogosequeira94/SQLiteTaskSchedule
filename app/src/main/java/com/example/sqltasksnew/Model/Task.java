@@ -10,6 +10,9 @@ public class Task implements Serializable {
     private String taskName;
     private int image;
     private String notes;
+    private String category;
+    private String deadline;
+    private int notification; //This should be a boolean
 
     public Long getId() {
         return id;
@@ -42,5 +45,29 @@ public class Task implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public int getNotification() {
+        return notification;
+    }
+
+    public void setNotification(int notification) {
+        this.notification = notification;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
